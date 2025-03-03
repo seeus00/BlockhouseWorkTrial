@@ -6,11 +6,13 @@ export async function getLatestCoinsData() {
         "ids": latestCoinIds.join(",")
     });
     
-    const resp = await fetch(`https://api.coingecko.com/api/v3/coins/markets?${params}`);
+    const resp = await fetch(`https://api.coingecko.com/api/v3/coins/markets?${params}`, { mode: 'cors' });
     if (!resp.ok) {
-        return { msg: "Error: failed to retrieve coins." };
+        return Response.json({ error: true, msg: "Error: failed to retrieve coins." });
     }
 
     const data = await resp.json();
+    data.error = false;
+
     return data;
 }
